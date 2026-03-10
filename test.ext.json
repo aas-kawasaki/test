@@ -163,6 +163,9 @@
 								},
 								"test:type": {
 									"$ref": "#/definitions/stringOrNil"
+								},
+								"test:number": {
+									"$ref": "#/definitions/nullableNumber"
 								}
 							},
 							"required": [
