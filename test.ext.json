@@ -1,0 +1,178 @@
+{
+	"type": "CityJSONExtension",
+	"name": "TEST",
+	"url": "https://raw.githubusercontent.com/aas-kawasaki/test/refs/heads/main/test.ext.json",
+	"version": "1.0",
+	"versionCityJSON": "2.0",
+	"description": "Extension for TEST Structure Model",
+	"definitions": {
+		"measureOrNil": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"anyOf": [
+						{
+							"type": "number"
+						},
+						{
+							"type": "null"
+						},
+						{
+							"type": "string",
+							"enum": [
+								"inapplicable",
+								"missing",
+								"unknown"
+							]
+						}
+					]
+				},
+				"uom": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"value"
+			],
+			"additionalProperties": false
+		},
+		"codeType": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "string"
+				},
+				"codeSpace": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"code"
+			]
+		},
+		"nullableString": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"nullableNumber": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"anyOf": [
+						{
+							"type": "number"
+						},
+						{
+							"type": "null"
+						},
+						{
+							"type": "string",
+							"enum": [
+								"inapplicable",
+								"missing",
+								"unknown"
+							]
+						}
+					]
+				}
+			}
+		},
+		"nullableBoolean": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"anyOf": [
+						{
+							"type": "boolean"
+						},
+						{
+							"type": "null"
+						},
+						{
+							"type": "string",
+							"enum": [
+								"inapplicable",
+								"missing",
+								"unknown"
+							]
+						}
+					]
+				}
+			}
+		},
+		"nullableDate": {
+			"type": [
+				"string",
+				"null"
+			]
+		},
+		"stringOrNil": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"$ref": "#/definitions/nullableString"
+				}
+			}
+		},
+		"dateOrNil": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"$ref": "#/definitions/nullableDate"
+				}
+			}
+		},
+		"numberOrNil": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"$ref": "#/definitions/nullableNumber"
+				}
+			}
+		},
+		"booleanOrNil": {
+			"type": "object",
+			"properties": {
+				"value": {
+					"$ref": "#/definitions/nullableBoolean"
+				}
+			}
+		}
+	},
+	"extraAttributes": {},
+	"extraCityObjects": {
+		"+Test": {
+			"allOf": [
+				{
+					"$ref": "cityobjects.schema.json#/_AbstractCityObject"
+				},
+				{
+					"properties": {
+						"type": {
+							"enum": [
+								"+Test"
+							]
+						},
+						"attributes": {
+							"type": "object",
+							"properties": {
+								"test:name": {
+									"$ref": "#/definitions/stringOrNil"
+								}
+							}
+						}
+					},
+					"required": [
+						"test:name"
+					]
+				}
+			]
+		}
+	},
+	"extraRootProperties": {
+	},
+	"extraSemanticSurfaces": {
+	}
+}
