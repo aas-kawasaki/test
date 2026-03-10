@@ -160,6 +160,9 @@
 							"properties": {
 								"test:name": {
 									"$ref": "#/definitions/stringOrNil"
+								},
+								"test:type": {
+									"$ref": "#/definitions/stringOrNil"
 								}
 							}
 						}
