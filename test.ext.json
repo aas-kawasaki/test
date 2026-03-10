@@ -158,17 +158,20 @@
 						"attributes": {
 							"type": "object",
 							"properties": {
-								"name": {
+								"test-name": {
 									"$ref": "#/definitions/stringOrNil"
 								},
 								"test-type": {
 									"$ref": "#/definitions/stringOrNil"
 								}
-							}
+							},
+							"required": [
+								"test-name"
+							]
 						}
 					},
 					"required": [
-						"name"
+						"type"
 					]
 				}
 			]
