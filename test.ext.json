@@ -56,7 +56,7 @@
 				"null"
 			]
 		},
-		"nullableNumber": {
+		"numberOrNil": {
 			"type": "object",
 			"properties": {
 				"value": {
@@ -79,7 +79,7 @@
 				}
 			}
 		},
-		"nullableBoolean": {
+		"booleanOrNil": {
 			"type": "object",
 			"properties": {
 				"value": {
@@ -121,22 +121,6 @@
 			"properties": {
 				"value": {
 					"$ref": "#/definitions/nullableDate"
-				}
-			}
-		},
-		"numberOrNil": {
-			"type": "object",
-			"properties": {
-				"value": {
-					"$ref": "#/definitions/nullableNumber"
-				}
-			}
-		},
-		"booleanOrNil": {
-			"type": "object",
-			"properties": {
-				"value": {
-					"$ref": "#/definitions/nullableBoolean"
 				}
 			}
 		}
