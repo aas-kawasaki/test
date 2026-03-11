@@ -165,7 +165,7 @@
 									"$ref": "#/definitions/stringOrNil"
 								},
 								"test:number": {
-									"$ref": "#/definitions/nullableNumber"
+									"$ref": "#/definitions/numberOrNil"
 								},
 								"test:value" : {
 									"$ref": "#/definitions/measureOrNil"
