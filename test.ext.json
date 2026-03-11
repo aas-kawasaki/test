@@ -166,6 +166,15 @@
 								},
 								"test:number": {
 									"$ref": "#/definitions/nullableNumber"
+								},
+								"test:value" : {
+									"$ref": "#/definitions/measureOrNil"
+								},
+								"test:bool" : {
+									"$ref": "#/definitions/booleanOrNil"
+								},
+								"test:date" : {
+									"$ref": "#/definitions/dateOrNil"
 								}
 							},
 							"required": [
