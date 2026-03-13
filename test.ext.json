@@ -175,7 +175,7 @@
 		"+Group": {
 			"allOf": [
 				{
-					"$ref": "cityobjects.schema.json#/CityObjectGroup"
+					"$ref": "cityobjects.schema.json#/_AbstractCityObject"
 				},
 				{
 					"properties": {
@@ -191,7 +191,10 @@
 									"type": "string"
 								}
 							}
-						}
+						},
+						"required":[
+							"type", "children"
+						]
 					}
 				}
 			]
