@@ -178,11 +178,18 @@
 					"$ref": "cityobjects.schema.json#/CityObjectGroup"
 				},
 				{
-					"attributes": {
-						"type": "object",
-						"properties": {
-							"description": {
-								"type": "string"
+					"properties": {
+						"type": {
+							"enum": [
+								"+Group"
+							]
+						},
+						"attributes": {
+							"type": "object",
+							"properties": {
+								"description": {
+									"type": "string"
+								}
 							}
 						}
 					}
