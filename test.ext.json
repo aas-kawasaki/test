@@ -191,11 +191,11 @@
 									"type": "string"
 								}
 							}
-						},
-						"required":[
-							"type", "children"
-						]
-					}
+						}
+					},
+					"required":[
+						"type", "children"
+					]
 				}
 			]
 		}
