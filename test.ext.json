@@ -171,6 +171,23 @@
 					]
 				}
 			]
+		},
+		"+Group": {
+			"allOf": [
+				{
+					"$ref": "cityobjects.schema.json#/CityObjectGroup"
+				},
+				{
+					"attributes": {
+						"type": "object",
+						"properties": {
+							"description": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			]
 		}
 	},
 	"extraRootProperties": {
