@@ -2484,10 +2484,7 @@
 					"items": {
 						"type": "string"
 					}
-			},
-			"required": [
-					"sip:componentName"
-				]
+			}
 		}
 	},
 	"extraCityObjects": {
