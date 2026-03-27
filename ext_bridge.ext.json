@@ -2527,7 +2527,6 @@
 									},
 									"sip:DamagePhoto": {
 										"$ref": "#/definitions/sip:DamagePhoto"
-										
 									},
 									"sip:DamageDrawing": {
 										"$ref": "#/definitions/sip:DamageDrawing"
@@ -2553,7 +2552,7 @@
 										"$ref": "geomprimitives.schema.json#/MultiSurface"
 									},
 									{
-										"$ref": "geomprimitives.schema.json#/sip:PointCloud"
+										"$ref": "#/definitions/sip:PointCloud"
 									}
 								]
 							}
@@ -2612,12 +2611,12 @@
 								"sip:referenceGuideline": {
 									"$ref": "#/definitions/sip:Resource"
 								}
-							}
+							},
+							"required": [
+								"sip:bridgeName"
+							]
 						}
-					},
-					"required": [
-						"sip:bridgeName"
-					]
+					}
 				}
 			]
 		},
@@ -2771,7 +2770,7 @@
 						}
 					},
 					"required": [
-						"+sip:target"
+						"sip:target"
 					]
 				}
 			]
@@ -2858,7 +2857,7 @@
 						}
 					},
 					"required": [
-						"+sip:target"
+						"sip:target"
 					]
 				}
 			]
@@ -2951,7 +2950,7 @@
 						}
 					},
 					"required": [
-						"+sip:target"
+						"sip:target"
 					]
 				}
 			]
@@ -3047,7 +3046,7 @@
 						}
 					},
 					"required": [
-						"+sip:target"
+						"sip:target"
 					]
 				}
 			]
@@ -3317,7 +3316,7 @@
 						}
 					},
 					"required": [
-						"+sip:target"
+						"sip:target"
 					]
 				}
 			]
