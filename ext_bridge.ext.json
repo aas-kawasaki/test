@@ -159,7 +159,7 @@
 				},
 				"sip:processType": {
 					"$ref": "#/definitions/codeType"
-				}				
+				}
 			},
 			"additionalProperties": false,
 			"required": [
@@ -224,7 +224,8 @@
 			},
 			"required": [
 				"sip:length"
-			]
+			],
+			"additionalProperties": false
 		},
 		"sip:Spacing": {
 			"type": "object",
@@ -235,13 +236,17 @@
 				"sip:axis": {
 					"$ref": "#/definitions/codeType"
 				},
-				"sip:length": {
+				"sip:spacing": {
 					"$ref": "#/definitions/measureOrNil"
 				},
 				"sip:measurementPoint": {
 					"$ref": "#/definitions/codeType"
 				}
-			}
+			},
+			"required": [
+				"sip:spacing"
+			],
+			"additionalProperties": false
 		},
 		"sip:Quantity": {
 			"type": "object",
@@ -255,7 +260,11 @@
 				"sip:count": {
 					"$ref": "#/definitions/numberOrNil"
 				}
-			}
+			},
+			"required": [
+				"sip:count"
+			],
+			"additionalProperties": false
 		},
 		"sip:Shape": {
 			"type": "object",
@@ -2232,7 +2241,6 @@
 						},
 						"sip:SpanGeneralDiagrams": {
 							"$ref": "#/definitions/sip:SpanGeneralDiagrams"
-							
 						},
 						"sip:AssemblyDrawings": {
 							"$ref": "#/definitions/sip:AssemblyDrawings"
@@ -3159,7 +3167,6 @@
 														{"$ref": "#/definitions/sip:Photo"},
 														{"type":"string","description":"id of photo"}
 													]
-													
 												}
 											}
 										}
@@ -3177,7 +3184,6 @@
 														{"$ref": "#/definitions/sip:Drawing"},
 														{"type":"string","description":"id of drawing"}
 													]
-													
 												}
 											}
 										}
