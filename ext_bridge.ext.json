@@ -1834,7 +1834,7 @@
 				}
 			},
 			"required": [
-				"sip:bridgeConditionStatus",
+				"sip:bridgeConditionStatus"
 			]
 		},
 		"sip:InspectionResult": {
