@@ -354,6 +354,7 @@
 				}
 			},
 			"required": [
+				"sip:type",
 				"sip:file"
 			]
 		},
@@ -1810,7 +1811,7 @@
 				"sip:crossBeamAssessment": {
 					"$ref": "#/definitions/sip:ConditionAssessment"
 				},
-				"sip:deckAssessments": {
+				"sip:deckAssessment": {
 					"$ref": "#/definitions/sip:ConditionAssessment"
 				},
 				"sip:abutmentAssessment": {
@@ -1833,22 +1834,7 @@
 				}
 			},
 			"required": [
-				"sip:inspection",
 				"sip:bridgeConditionStatus",
-				"sip:mainMemberConditionStatus",
-				"sip:bearingExpansionConditionStatus",
-				"sip:conditionRemarks",
-				"sip:hasThirdPartyDamage",
-				"sip:overallInspectionResult",
-				"sip:mainGirderAssessment",
-				"sip:crossBeamAssessment",
-				"sip:deckAssessments",
-				"sip:abutmentAssessment",
-				"sip:pierAssessment",
-				"sip:bearingAssessment",
-				"sip:expansionDeviceAssessment",
-				"sip:railingGuardAssessment",
-				"sip:pavementAssessment"
 			]
 		},
 		"sip:InspectionResult": {
@@ -1936,7 +1922,7 @@
 					"$ref": "#/definitions/codeType"
 				},
 				"sip:conditionStatus": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
+					"$ref": "#/definitions/codeType"
 				}
 			},
 			"required": [
@@ -2004,6 +1990,7 @@
 				"sip:supportMeasureCategory",
 				"sip:componentName",
 				"sip:componentNumber",
+				"sip:elementNumber",
 				"sip:reason",
 				"sip:countermeasure"
 			]
@@ -2620,9 +2607,9 @@
 									"$ref": "#/definitions/sip:Resource"
 								}
 							},
-							"required": [
+								"required": [
 								"sip:bridgeName"
-							]
+								]
 						}
 					}
 				}
@@ -2649,6 +2636,7 @@
 							}
 						}
 					}
+
 				}
 			]
 		},
