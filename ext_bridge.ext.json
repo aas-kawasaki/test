@@ -311,7 +311,11 @@
 				"sip:pointFileSrsName": {
 					"$ref": "#/definitions/stringOrNil"
 				}
-			}
+			},
+			"required": [
+				"sip:mimeType",
+				"sip:pointFile"
+			]
 		},
 		"sip:LayoutInfo": {
 			"type": "object",
