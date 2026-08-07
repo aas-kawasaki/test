@@ -124,6 +124,62 @@
 				}
 			}
 		},
+		"identifier": {
+			"type": "object",
+			"properties": {
+				"code": {
+					"type": "string"
+				},
+				"codeSpace": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"code",
+				"codeSpace"
+			]
+		},
+		"cost": {
+			"type": "object",
+			"properties": {
+				"cost": {
+					"type": "number"
+				},
+				"currency": {
+					"$ref": "#/definitions/codeType"
+				}
+			},
+			"required": [
+				"cost"
+			]
+		},
+		"sip:DetailedCost": {
+			"type": "object",
+			"properties": {
+				"sip:countermeasureMethod": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:materials": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:unitPrice": {
+					"$ref": "#/definitions/cost"
+				},
+				"sip:quantity": {
+					"$ref": "#/definitions/measureOrNil"
+				},
+				"sip:constructionCost": {
+					"$ref": "#/definitions/cost"
+				}
+			},
+			"required": [
+				"sip:countermeasureMethod",
+				"sip:materials",
+				"sip:unitPrice",
+				"sip:quantity",
+				"sip:constructionCost"
+			]
+		},
 		"sip:TimeType": {
 			"type": "object",
 			"properties": {
@@ -159,12 +215,65 @@
 				},
 				"sip:processType": {
 					"$ref": "#/definitions/codeType"
+				},
+				"sip:note": {
+					"$ref": "#/definitions/stringOrNil"
 				}
 			},
 			"additionalProperties": false,
 			"required": [
 				"sip:title"
 			]
+		},
+		"sip:BridgeAttribute": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				}
+			}
 		},
 		"sip:Composition": {
 			"type": "object",
@@ -175,8 +284,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:concreteStrength": {
 					"$ref": "#/definitions/measureOrNil"
@@ -270,13 +415,21 @@
 			"type": "object",
 			"properties": {
 				"sip:acquisitionDate": {
-					"$ref": "#/definitions/dateOrNil"
+					"$ref": "#/definitions/sip:TimeType"
 				},
 				"sip:acquisitionMethod": {
 					"$ref": "#/definitions/stringOrNil"
 				},
-				"sip:source": {
-					"$ref": "#/definitions/sip:Resource"
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:geometricShape": {
 					"$ref": "geomprimitives.schema.json#/MultiSurface"
@@ -385,14 +538,55 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:photo": {
-							"anyOf":[
-								{"$ref": "#/definitions/sip:Photo"},
-								{"type":"string","description":"id of Photo"}
-							]
+					"anyOf": [
+						{
+							"$ref": "#/definitions/sip:Photo"
+						},
+						{
+							"type": "string",
+							"description": "id of Photo"
+						}
+					]
 				},
 				"sip:spanNumber": {
 					"$ref": "#/definitions/stringOrNil"
@@ -454,8 +648,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:length": {
 					"$ref": "#/definitions/measureOrNil"
@@ -473,6 +703,45 @@
 					"items": {
 						"$ref": "#/definitions/sip:TimeType"
 					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:length": {
 					"$ref": "#/definitions/measureOrNil"
@@ -499,6 +768,45 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
 				"sip:length": {
 					"$ref": "#/definitions/measureOrNil"
 				},
@@ -522,8 +830,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:area": {
 					"$ref": "#/definitions/measureOrNil"
@@ -533,7 +877,6 @@
 				"sip:area"
 			]
 		},
-
 		"sip:BridgeIdInfo": {
 			"type": "object",
 			"properties": {
@@ -543,8 +886,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:bridgeCode": {
 					"$ref": "#/definitions/stringOrNil"
@@ -569,8 +948,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:locationFrom": {
 					"$ref": "#/definitions/stringOrNil"
@@ -611,8 +1026,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:routeType": {
 					"$ref": "#/definitions/codeType"
@@ -631,8 +1082,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:category": {
 					"$ref": "#/definitions/codeType"
@@ -651,8 +1138,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				}
 			}
 		},
@@ -665,10 +1188,102 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				}
 			}
+		},
+		"sip:BridgeAge": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:age": {
+					"$ref": "#/definitions/numberOrNil"
+				}
+			},
+			"required": [
+				"sip:age"
+			]
 		},
 		"sip:BridgeSpecifications": {
 			"type": "object",
@@ -679,8 +1294,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:method": {
 					"$ref": "#/definitions/codeType"
@@ -720,8 +1371,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:guidelines": {
 					"$ref": "#/definitions/codeType"
@@ -730,20 +1417,6 @@
 			"required": [
 				"sip:guidelines"
 			]
-		},
-		"sip:ConstructionType": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:type": {
-					"$ref": "#/definitions/codeType"
-				}
-			}
 		},
 		"sip:BridgeType": {
 			"type": "object",
@@ -754,8 +1427,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:upperType": {
 					"type": "array",
@@ -792,8 +1501,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:totalWidth": {
 					"$ref": "#/definitions/measureOrNil"
@@ -854,8 +1599,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:designLoad": {
 					"$ref": "#/definitions/codeType"
@@ -877,8 +1658,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:designMoment": {
 					"$ref": "#/definitions/numberOrNil"
@@ -903,8 +1720,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:name": {
 					"$ref": "#/definitions/stringOrNil"
@@ -926,8 +1779,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:orgName": {
 					"$ref": "#/definitions/codeType"
@@ -946,8 +1835,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:layerType": {
 					"$ref": "#/definitions/codeType"
@@ -966,8 +1891,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:trafficDaytime12h": {
 					"$ref": "#/definitions/numberOrNil"
@@ -989,8 +1950,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:isLimited": {
 					"$ref": "#/definitions/booleanOrNil"
@@ -1012,8 +2009,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:cover": {
 					"$ref": "#/definitions/numberOrNil"
@@ -1035,8 +2068,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:areaType": {
 					"$ref": "#/definitions/codeType"
@@ -1061,13 +2130,54 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:drawing": {
-					"anyOf":[
-						{"$ref": "#/definitions/sip:Drawing"},
-						{"type":"string","description":"id of Drawing"}
+					"anyOf": [
+						{
+							"$ref": "#/definitions/sip:Drawing"
+						},
+						{
+							"type": "string",
+							"description": "id of Drawing"
+						}
 					]
 				}
 			},
@@ -1084,13 +2194,54 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:drawing": {
-					"anyOf":[
-						{"$ref": "#/definitions/sip:Drawing"},
-						{"type":"string","description":"id of Drawing"}
+					"anyOf": [
+						{
+							"$ref": "#/definitions/sip:Drawing"
+						},
+						{
+							"type": "string",
+							"description": "id of Drawing"
+						}
 					]
 				}
 			}
@@ -1104,13 +2255,54 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:drawing": {
-					"anyOf":[
-						{"$ref": "#/definitions/sip:Drawing"},
-						{"type":"string","description":"id of Drawing"}
+					"anyOf": [
+						{
+							"$ref": "#/definitions/sip:Drawing"
+						},
+						{
+							"type": "string",
+							"description": "id of Drawing"
+						}
 					]
 				}
 			}
@@ -1124,13 +2316,54 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:drawing": {
-					"anyOf":[
-						{"$ref": "#/definitions/sip:Drawing"},
-						{"type":"string","description":"id of Drawing"}
+					"anyOf": [
+						{
+							"$ref": "#/definitions/sip:Drawing"
+						},
+						{
+							"type": "string",
+							"description": "id of Drawing"
+						}
 					]
 				}
 			}
@@ -1144,8 +2377,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:crossingConditions": {
 					"$ref": "#/definitions/stringOrNil"
@@ -1164,8 +2433,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:boringLog": {
 					"type": "string"
@@ -1190,8 +2495,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:paintingType": {
 					"$ref": "#/definitions/codeType"
@@ -1210,8 +2551,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:approachMethod": {
 					"$ref": "#/definitions/stringOrNil"
@@ -1253,25 +2630,31 @@
 					"$ref": "#/definitions/stringOrNil"
 				},
 				"sip:did": {
-					"$ref": "#/definitions/stringOrNil"
+					"$ref": "#/definitions/booleanOrNil"
 				},
 				"sip:busRoute": {
-					"$ref": "#/definitions/stringOrNil"
+					"$ref": "#/definitions/booleanOrNil"
 				},
 				"sip:isolatedSettlement": {
-					"$ref": "#/definitions/stringOrNil"
+					"$ref": "#/definitions/booleanOrNil"
 				},
 				"sip:rainfallRestriction": {
-					"$ref": "#/definitions/stringOrNil"
+					"$ref": "#/definitions/booleanOrNil"
 				},
 				"sip:winterClosure": {
-					"$ref": "#/definitions/stringOrNil"
+					"$ref": "#/definitions/booleanOrNil"
 				},
 				"sip:aestheticConsideration": {
-					"$ref": "#/definitions/stringOrNil"
+					"$ref": "#/definitions/booleanOrNil"
 				},
 				"sip:historicalValue": {
-					"$ref": "#/definitions/stringOrNil"
+					"$ref": "#/definitions/booleanOrNil"
+				},
+				"sip:schoolRoute": {
+					"$ref": "#/definitions/booleanOrNil"
+				},
+				"sip:evacuationRoute": {
+					"$ref": "#/definitions/booleanOrNil"
 				}
 			}
 		},
@@ -1284,8 +2667,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:substanceType": {
 					"$ref": "#/definitions/codeType"
@@ -1304,8 +2723,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:type": {
 					"$ref": "#/definitions/codeType"
@@ -1324,8 +2779,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:type": {
 					"$ref": "#/definitions/codeType"
@@ -1344,8 +2835,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:sectionNumber": {
 					"$ref": "#/definitions/numberOrNil"
@@ -1373,11 +2900,47 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:number": {
-					"$ref": "#/definitions/numberOrNil"
+					"$ref": "#/definitions/stringOrNil"
 				}
 			},
 			"required": [
@@ -1393,8 +2956,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:count": {
 					"$ref": "#/definitions/numberOrNil"
@@ -1407,40 +3006,28 @@
 		"sip:CodeAttribute": {
 			"type": "object",
 			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
 				"sip:name": {
 					"type": "string"
 				},
 				"sip:value": {
 					"$ref": "#/definitions/codeType"
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
 				}
 			}
 		},
 		"sip:StringAttribute": {
 			"type": "object",
 			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
 				"sip:name": {
 					"type": "string"
 				},
 				"sip:value": {
 					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
 				}
 			},
 			"required": [
@@ -1451,20 +3038,14 @@
 		"sip:IntegerAttribute": {
 			"type": "object",
 			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
 				"sip:name": {
 					"type": "string"
 				},
 				"sip:value": {
 					"$ref": "#/definitions/numberOrNil"
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
 				}
 			},
 			"required": [
@@ -1475,71 +3056,106 @@
 		"sip:DoubleAttribute": {
 			"type": "object",
 			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
 				"sip:name": {
 					"type": "string"
 				},
 				"sip:value": {
 					"$ref": "#/definitions/numberOrNil"
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
 				}
 			},
 			"required": [
 				"sip:name",
 				"sip:value"
-			]
-		},
-		"sip:DateAttribute": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:name": {
-					"type": "string"
-				}
-			},
-			"required": [
-				"sip:name",
-				"sip:temporalAttribute"
 			]
 		},
 		"sip:BooleanAttribute": {
 			"type": "object",
 			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
 				"sip:name": {
 					"type": "string"
 				},
 				"sip:value": {
 					"$ref": "#/definitions/booleanOrNil"
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
 				}
 			},
 			"required": [
 				"sip:name",
 				"sip:value"
 			]
+		},
+		"sip:UriAttribute": {
+			"type": "object",
+			"properties": {
+				"sip:name": {
+					"type": "string"
+				},
+				"sip:value": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				}
+			},
+			"required": [
+				"sip:name",
+				"sip:value"
+			]
+		},
+		"sip:DamageAttribute": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				}
+			}
 		},
 		"sip:DamageDetails": {
 			"type": "object",
@@ -1550,8 +3166,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:assessment": {
 					"$ref": "#/definitions/codeType"
@@ -1585,8 +3237,44 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:spanNumber": {
 					"$ref": "#/definitions/stringOrNil"
@@ -1614,14 +3302,55 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:photo": {
-							"anyOf":[
-								{"$ref": "#/definitions/sip:Photo"},
-								{"type":"string","description":"id of Photo"}
-							]
+					"anyOf": [
+						{
+							"$ref": "#/definitions/sip:Photo"
+						},
+						{
+							"type": "string",
+							"description": "id of Photo"
+						}
+					]
 				},
 				"sip:spanNumber": {
 					"$ref": "#/definitions/stringOrNil"
@@ -1646,353 +3375,59 @@
 						"$ref": "#/definitions/sip:TimeType"
 					}
 				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
 				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
 				},
 				"sip:drawing": {
-					"anyOf":[
-						{"$ref": "#/definitions/sip:Drawing"},
-						{"type":"string","description":"id of Drawing"}
+					"anyOf": [
+						{
+							"$ref": "#/definitions/sip:Drawing"
+						},
+						{
+							"type": "string",
+							"description": "id of Drawing"
+						}
 					]
 				}
 			},
 			"required": [
 				"sip:drawing"
-			]
-		},
-		"sip:MitigationResult": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:description": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:result": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:damage": {
-					"type": "array",
-					"description": "the IDs of the Damage",
-					"items": {
-						"type": "string"
-					}
-				}
-			},
-			"required": [
-				"sip:description",
-				"sip:damage"
-			]
-		},
-		"sip:EmergencyMeasureResult": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:description": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:result": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:damage": {
-					"type": "array",
-					"description": "the IDs of the Damage",
-					"items": {
-						"type": "string"
-					}
-				}
-			},
-			"required": [
-				"sip:description",
-				"sip:damage"
-			]
-		},
-		"sip:RepairReinforcementResult": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:description": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:result": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:damage": {
-					"type": "array",
-					"description": "the IDs of the Damage",
-					"items": {
-						"type": "string"
-					}
-				},
-				"sip:repairReinforcement": {
-					"type": "string",
-					"description": "the IDs of the RepairReinforcement"
-				}
-			},
-			"required": [
-				"sip:description",
-				"sip:damage",
-				"sip:repairReinforcement"
-			]
-		},
-		"sip:BridgeConditionStatus": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:inspection": {
-					"type": "string",
-					"description": "The IDs of BridgeCheckLog."
-				},
-				"sip:damage": {
-					"type": "array",
-					"description": "The IDs of damages associated with this status.",
-					"items": {
-						"type": "string"
-					}
-				},
-				"sip:result": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:findings": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:bridgeConditionStatus": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:mainMemberConditionStatus": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:bearingExpansionConditionStatus": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:conditionRemarks": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:hasThirdPartyDamage": {
-					"$ref": "#/definitions/booleanOrNil"
-				},
-				"sip:overallInspectionResult": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:mainGirderAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:crossBeamAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:deckAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:abutmentAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:pierAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:bearingAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:expansionDeviceAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:railingGuardAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				},
-				"sip:pavementAssessment": {
-					"$ref": "#/definitions/sip:ConditionAssessment"
-				}
-			},
-			"required": [
-				"sip:bridgeConditionStatus"
-			]
-		},
-		"sip:InspectionResult": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:inspection": {
-					"type": "string",
-					"description": "The IDs of Inspection."
-				},
-				"sip:damage": {
-					"type": "array",
-					"description": "The IDs of damages associated with this status.",
-					"items": {
-						"type": "string"
-					}
-				},
-				"sip:result": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:findings": {
-					"$ref": "#/definitions/stringOrNil"
-				}
-			},
-			"required": [
-				"sip:inspection"
-			]
-		},
-		"sip:MemberConditionStatus": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:inspection": {
-					"type": "string",
-					"description": "The IDs of Inspection."
-				},
-				"sip:damage": {
-					"type": "array",
-					"description": "The IDs of damages associated with this status.",
-					"items": {
-						"type": "string"
-					}
-				},
-				"sip:result": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:findings": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:spanNumber": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:constructionType": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:substance": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:componentName": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:componentNumber": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:damageSeverityMax": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:damageSeverityMin": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:conditionStatus": {
-					"$ref": "#/definitions/codeType"
-				}
-			},
-			"required": [
-				"sip:inspection",
-				"sip:spanNumber",
-				"sip:componentName",
-				"sip:componentNumber",
-				"sip:conditionStatus"
-			]
-		},
-		"sip:OtherStatusInfo": {
-			"type": "object",
-			"properties": {
-				"sip:temporalAttribute": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:TimeType"
-					}
-				},
-				"sip:resource": {
-					"$ref": "#/definitions/sip:Resource"
-				},
-				"sip:inspection": {
-					"type": "string",
-					"description": "The IDs of Inspection."
-				},
-				"sip:damage": {
-					"type": "array",
-					"description": "The IDs of damages associated with this status.",
-					"items": {
-						"type": "string"
-					}
-				},
-				"sip:result": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:findings": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:spanNumber": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:supportMeasureCategory": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:componentName": {
-					"$ref": "#/definitions/codeType"
-				},
-				"sip:componentNumber": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:elementNumber": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:reason": {
-					"$ref": "#/definitions/stringOrNil"
-				},
-				"sip:countermeasure": {
-					"$ref": "#/definitions/stringOrNil"
-				}
-			},
-			"required": [
-				"sip:inspection",
-				"sip:spanNumber",
-				"sip:supportMeasureCategory",
-				"sip:componentName",
-				"sip:componentNumber",
-				"sip:elementNumber",
-				"sip:reason",
-				"sip:countermeasure"
 			]
 		},
 		"sip:InspectionSummary": {
@@ -2023,6 +3458,1725 @@
 					"$ref": "#/definitions/codeType"
 				}
 			}
+		},
+		"sip:Definition": {
+			"type": "object",
+			"properties": {
+				"sip:identifier": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:name": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:description": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:lifespan": {
+					"$ref": "#/definitions/stringOrNil"
+				}
+			}
+		},
+		"sip:DefinitionRelationship": {
+			"type": "object",
+			"properties": {
+				"sip:identifier": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:name": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:description": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:lifespan": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:relationshipType": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:from": {
+					"$ref": "#/definitions/identifier",
+					"description": "the identifier of sip:Definition"
+				},
+				"sip:to": {
+					"$ref": "#/definitions/identifier",
+					"description": "the identifier of sip:Definition"
+				}
+			}
+		},
+		"sip:Dictionary": {
+			"type": "object",
+			"properties": {
+				"sip:identifier": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:name": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:description": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:lifespan": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:dictionaryEntry": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:DefinitionRelationship"
+							},
+							{
+								"$ref": "#/definitions/sip:Definition"
+							}
+						]
+					}
+				}
+			}
+		},
+		"sip:Assignee": {
+			"type": "object",
+			"properties": {
+				"sip:name": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:organization": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:role": {
+					"$ref": "#/definitions/codeType"
+				}
+			}
+		},
+		"sip:ApplicationInfo": {
+			"type": "object",
+			"properties": {
+				"sip:ioType": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:info": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/identifier"
+					}
+				}
+			}
+		},
+		"sip:BridgeMaintenanceProcess": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:bridgeName": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:processAssignee": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:Assignee"
+					}
+				},
+				"sip:processData": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:ApplicationInfo"
+					}
+				},
+				"sip:result": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeMaintenanceResult"
+						}
+					]
+				}
+			}
+		},
+		"sip:BridgeCheckLog": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:bridgeName": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:processAssignee": {
+					"type": "array",
+					"items": {
+						"anyOf":[
+							{
+								"$ref": "#/definitions/sip:Assignee"
+							},
+							{
+							"type": "string",
+							"description": "the ID of sip:Assignee"
+							}
+						]
+					}
+				},
+				"sip:processData": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:ApplicationInfo"
+					}
+				},
+				"sip:result": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:InspectionResult"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:InspectionResult"
+						}
+					]
+				},
+				"sip:checkType": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:bridgeEvaluator": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:surveyMethod": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:inspectionMethod": {
+					"$ref": "#/definitions/stringOrNil"
+				}
+			}
+		},
+		"sip:BridgeMaintenancePlan": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:bridgeName": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:processAssignee": {
+					"type": "array",
+					"items": {
+						"anyOf":[
+							{
+								"$ref": "#/definitions/sip:Assignee"
+							},
+							{
+							"type": "string",
+							"description": "the ID of sip:Assignee"
+							}
+						]
+					}
+				},
+				"sip:processData": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:ApplicationInfo"
+					}
+				},
+				"sip:result": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeMaintenancePlanResult"
+						}
+					]
+				}
+			}
+		},
+		"sip:RepairPlan": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:bridgeName": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:processAssignee": {
+					"type": "array",
+					"items": {
+						"anyOf":[
+							{
+								"$ref": "#/definitions/sip:Assignee"
+							},
+							{
+							"type": "string",
+							"description": "the ID of sip:Assignee"
+							}
+						]
+					}
+				},
+				"sip:processData": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:ApplicationInfo"
+					}
+				},
+				"sip:result": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:RepairPlanResult"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:RepairPlanResult"
+						}
+					]
+				},
+				"sip:previousPlan": {
+					"type": "string",
+					"description": "the ID of sip:RepairPlan"
+				}
+			}
+		},
+		"sip:RepairDesign": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:bridgeName": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:processAssignee": {
+					"type": "array",
+					"items": {
+						"anyOf":[
+							{
+								"$ref": "#/definitions/sip:Assignee"
+							},
+							{
+							"type": "string",
+							"description": "the ID of sip:Assignee"
+							}
+						]
+					}
+				},
+				"sip:processData": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:ApplicationInfo"
+					}
+				},
+				"sip:result": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:RepairDesignResult"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:RepairDesignResult"
+						}
+					]
+				}
+			}
+		},
+		"sip:BridgeMaintenanceMeasures": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:bridgeName": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:processAssignee": {
+					"type": "array",
+					"items": {
+						"anyOf":[
+							{
+								"$ref": "#/definitions/sip:Assignee"
+							},
+							{
+							"type": "string",
+							"description": "the ID of sip:Assignee"
+							}
+						]
+					}
+				},
+				"sip:processData": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:ApplicationInfo"
+					}
+				},
+				"sip:result": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
+						},
+						{
+							"$ref": "#/definitions/sip:EmergencyMeasureResult"
+						},
+						{
+							"type": "string",
+							"description": "the ID of BridgeMaintenanceMeasuresResult or EmergencyMeasureResult"
+						}
+					]
+				}
+			}
+		},
+		"sip:RepairReinforcement": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:bridgeName": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:processAssignee": {
+					"type": "array",
+					"items": {
+						"anyOf":[
+							{
+								"$ref": "#/definitions/sip:Assignee"
+							},
+							{
+							"type": "string",
+							"description": "the ID of sip:Assignee"
+							}
+						]
+					}
+				},
+				"sip:processData": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:ApplicationInfo"
+					}
+				},
+				"sip:result": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:RepairReinforcementResult"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:RepairReinforcementResult"
+						}
+					]
+				}
+			}
+		},
+		"sip:BridgeMaintenanceResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeMaintenanceProcess"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"sip:InspectionResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeCheckLog"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeCheckLog"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"required": [
+				"sip:process"
+			]
+		},
+		"sip:BridgeConditionStatus": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeCheckLog"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeCheckLog"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sip:bridgeConditionStatus": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:mainMemberConditionStatus": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:bearingExpansionConditionStatus": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:conditionRemarks": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:hasThirdPartyDamage": {
+					"$ref": "#/definitions/booleanOrNil"
+				},
+				"sip:overallInspectionResult": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:mainGirderAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:crossBeamAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:deckAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:abutmentAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:pierAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:bearingAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:expansionDeviceAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:railingGuardAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:pavementAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				},
+				"sip:otherAssessment": {
+					"$ref": "#/definitions/sip:ConditionAssessment"
+				}
+			},
+			"required": [
+				"sip:bridgeConditionStatus"
+			]
+		},
+		"sip:MemberConditionStatus": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeCheckLog"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeCheckLog"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sip:spanNumber": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:constructionType": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:substance": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:componentName": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:componentNumber": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:damageSeverityMax": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:damageSeverityMin": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:conditionStatus": {
+					"$ref": "#/definitions/codeType"
+				}
+			},
+			"required": [
+				"sip:process",
+				"sip:spanNumber",
+				"sip:componentName",
+				"sip:componentNumber",
+				"sip:conditionStatus"
+			]
+		},
+		"sip:OtherStatusInfo": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeCheckLog"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeCheckLog"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sip:spanNumber": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:supportMeasureCategory": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:componentName": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:componentNumber": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:elementNumber": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:reason": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:countermeasure": {
+					"$ref": "#/definitions/stringOrNil"
+				}
+			},
+			"required": [
+				"sip:process",
+				"sip:spanNumber",
+				"sip:supportMeasureCategory",
+				"sip:componentName",
+				"sip:componentNumber",
+				"sip:elementNumber",
+				"sip:reason",
+				"sip:countermeasure"
+			]
+		},
+		"sip:BridgeMaintenancePlanResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeMaintenancePlan"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sip:estimatedConstructionCost": {
+					"$ref": "#/definitions/cost"
+				},
+				"sip:details": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:DetailedCost"
+					}
+				}
+			},
+			"required": [
+				"sip:estimatedConstructionCost"
+			]
+		},
+		"sip:RepairPlanResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:RepairPlan"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:RepairPlan"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sip:estimatedConstructionCost": {
+					"$ref": "#/definitions/cost"
+				},
+				"sip:details": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:DetailedCost"
+					}
+				}
+			},
+			"required": [
+				"sip:estimatedConstructionCost"
+			]
+		},
+		"sip:RepairDesignResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:RepairDesign"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:RepairDesign"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sip:estimatedConstructionCost": {
+					"$ref": "#/definitions/cost"
+				},
+				"sip:details": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:DetailedCost"
+					}
+				},
+				"sip:conditionAssessmentScore": {
+					"$ref": "#/definitions/numberOrNil"
+				},
+				"sip:specificationSignificanceScore": {
+					"$ref": "#/definitions/numberOrNil"
+				},
+				"sip:countermeasurePriority": {
+					"$ref": "#/definitions/numberOrNil"
+				},
+				"sip:previousCountermeasurePriority": {
+					"$ref": "#/definitions/numberOrNil"
+				},
+				"sip:overallScore": {
+					"$ref": "#/definitions/numberOrNil"
+				},
+				"sip:managementCategory": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:countermeasureUrgency": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:countermeasureDeadlineEstimate": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:nextInspection": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:directConstructionCost": {
+					"$ref": "#/definitions/cost"
+				}
+			},
+			"required": [
+				"sip:estimatedConstructionCost",
+				"sip:countermeasurePriority",
+				"sip:overallScore",
+				"sip:managementCategory",
+				"sip:countermeasureUrgency",
+				"sip:countermeasureDeadlineEstimate",
+				"sip:nextInspection",
+				"sip:directConstructionCost"
+			]
+		},
+		"sip:BridgeMaintenanceMeasuresResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeMaintenanceMeasures"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"sip:EmergencyMeasureResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:BridgeMaintenanceMeasures"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"sip:RepairReinforcementResult": {
+			"type": "object",
+			"properties": {
+				"sip:temporalAttribute": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/sip:TimeType"
+					}
+				},
+				"sip:attribute": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"$ref": "#/definitions/sip:StringAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:CodeAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:IntegerAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:DoubleAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:BooleanAttribute"
+							},
+							{
+								"$ref": "#/definitions/sip:UriAttribute"
+							}
+						]
+					}
+				},
+				"sip:definition": {
+					"$ref": "#/definitions/identifier"
+				},
+				"sip:resource": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:Resource"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:Resource"
+						}
+					]
+				},
+				"sip:result": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:findings": {
+					"$ref": "#/definitions/stringOrNil"
+				},
+				"sip:process": {
+					"oneOf": [
+						{
+							"$ref": "#/definitions/sip:RepairReinforcement"
+						},
+						{
+							"type": "string",
+							"description": "the ID of sip:RepairReinforcement"
+						}
+					]
+				},
+				"sip:damage": {
+					"type": "array",
+					"description": "the IDs of the Damage",
+					"items": {
+						"type": "string"
+					}
+				},
+				"sip:substance": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:measureCategory": {
+					"$ref": "#/definitions/codeType"
+				},
+				"sip:details": {
+					"$ref": "#/definitions/stringOrNil"
+				}
+			},
+			"required": [
+				"sip:substance",
+				"sip:measureCategory",
+				"sip:details"
+			]
 		}
 	},
 	"extraAttributes": {
@@ -2032,6 +5186,9 @@
 				"items": {
 					"type": "object",
 					"properties": {
+						"sip:BridgeAttribute": {
+							"$ref": "#/definitions/sip:BridgeAttribute"
+						},
 						"sip:BridgeType": {
 							"$ref": "#/definitions/sip:BridgeType"
 						},
@@ -2080,35 +5237,53 @@
 						"sip:AssemblyDrawings": {
 							"$ref": "#/definitions/sip:AssemblyDrawings"
 						},
-						"sip:CodeAttribute": {
-							"$ref": "#/definitions/sip:CodeAttribute"
+						"sip:BridgeMaintenanceProcess": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
 						},
-						"sip:StringAttribute": {
-							"$ref": "#/definitions/sip:StringAttribute"
+						"sip:BridgeCheckLog": {
+							"$ref": "#/definitions/sip:BridgeCheckLog"
 						},
-						"sip:DateAttribute": {
-							"$ref": "#/definitions/sip:DateAttribute"
+						"sip:BridgeMaintenancePlan": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlan"
 						},
-						"sip:IntegerAttribute": {
-							"$ref": "#/definitions/sip:IntegerAttribute"
+						"sip:RepairPlan": {
+							"$ref": "#/definitions/sip:RepairPlan"
 						},
-						"sip:BooleanAttribute": {
-							"$ref": "#/definitions/sip:BooleanAttribute"
+						"sip:RepairDesign": {
+							"$ref": "#/definitions/sip:RepairDesign"
 						},
-						"sip:DoubleAttribute": {
-							"$ref": "#/definitions/sip:DoubleAttribute"
+						"sip:BridgeMaintenanceMeasures": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+						},
+						"sip:RepairReinforcement": {
+							"$ref": "#/definitions/sip:RepairReinforcement"
+						},
+						"sip:BridgeMaintenanceResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceResult"
 						},
 						"sip:InspectionResult": {
 							"$ref": "#/definitions/sip:InspectionResult"
 						},
-						"sip:OtherStatusInfo": {
-							"$ref": "#/definitions/sip:OtherStatusInfo"
+						"sip:MemberConditionStatus": {
+							"$ref": "#/definitions/sip:MemberConditionStatus"
 						},
 						"sip:BridgeConditionStatus": {
 							"$ref": "#/definitions/sip:BridgeConditionStatus"
 						},
-						"sip:MitigationResult": {
-							"$ref": "#/definitions/sip:MitigationResult"
+						"sip:OtherStatusInfo": {
+							"$ref": "#/definitions/sip:OtherStatusInfo"
+						},
+						"sip:BridgeMaintenancePlanResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+						},
+						"sip:RepairPlanResult": {
+							"$ref": "#/definitions/sip:RepairPlanResult"
+						},
+						"sip:RepairDesignResult": {
+							"$ref": "#/definitions/sip:RepairDesignResult"
+						},
+						"sip:BridgeMaintenanceMeasuresResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
 						},
 						"sip:EmergencyMeasureResult": {
 							"$ref": "#/definitions/sip:EmergencyMeasureResult"
@@ -2142,6 +5317,9 @@
 				"items": {
 					"type": "object",
 					"properties": {
+						"sip:BridgeAttribute": {
+							"$ref": "#/definitions/sip:BridgeAttribute"
+						},
 						"sip:BridgeIdInfo": {
 							"$ref": "#/definitions/sip:BridgeIdInfo"
 						},
@@ -2159,6 +5337,9 @@
 						},
 						"sip:YearOfConstruction": {
 							"$ref": "#/definitions/sip:YearOfConstruction"
+						},
+						"sip:BridgeAge": {
+							"$ref": "#/definitions/sip:BridgeAge"
 						},
 						"sip:ApplicableGuidelines": {
 							"$ref": "#/definitions/sip:ApplicableGuidelines"
@@ -2238,35 +5419,53 @@
 						"sip:LongitudinalSlope": {
 							"$ref": "#/definitions/sip:LongitudinalSlope"
 						},
-						"sip:CodeAttribute": {
-							"$ref": "#/definitions/sip:CodeAttribute"
+						"sip:BridgeMaintenanceProcess": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
 						},
-						"sip:StringAttribute": {
-							"$ref": "#/definitions/sip:StringAttribute"
+						"sip:BridgeCheckLog": {
+							"$ref": "#/definitions/sip:BridgeCheckLog"
 						},
-						"sip:DateAttribute": {
-							"$ref": "#/definitions/sip:DateAttribute"
+						"sip:BridgeMaintenancePlan": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlan"
 						},
-						"sip:IntegerAttribute": {
-							"$ref": "#/definitions/sip:IntegerAttribute"
+						"sip:RepairPlan": {
+							"$ref": "#/definitions/sip:RepairPlan"
 						},
-						"sip:BooleanAttribute": {
-							"$ref": "#/definitions/sip:BooleanAttribute"
+						"sip:RepairDesign": {
+							"$ref": "#/definitions/sip:RepairDesign"
 						},
-						"sip:DoubleAttribute": {
-							"$ref": "#/definitions/sip:DoubleAttribute"
+						"sip:BridgeMaintenanceMeasures": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+						},
+						"sip:RepairReinforcement": {
+							"$ref": "#/definitions/sip:RepairReinforcement"
+						},
+						"sip:BridgeMaintenanceResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceResult"
 						},
 						"sip:InspectionResult": {
 							"$ref": "#/definitions/sip:InspectionResult"
 						},
-						"sip:OtherStatusInfo": {
-							"$ref": "#/definitions/sip:OtherStatusInfo"
+						"sip:MemberConditionStatus": {
+							"$ref": "#/definitions/sip:MemberConditionStatus"
 						},
 						"sip:BridgeConditionStatus": {
 							"$ref": "#/definitions/sip:BridgeConditionStatus"
 						},
-						"sip:MitigationResult": {
-							"$ref": "#/definitions/sip:MitigationResult"
+						"sip:OtherStatusInfo": {
+							"$ref": "#/definitions/sip:OtherStatusInfo"
+						},
+						"sip:BridgeMaintenancePlanResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+						},
+						"sip:RepairPlanResult": {
+							"$ref": "#/definitions/sip:RepairPlanResult"
+						},
+						"sip:RepairDesignResult": {
+							"$ref": "#/definitions/sip:RepairDesignResult"
+						},
+						"sip:BridgeMaintenanceMeasuresResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
 						},
 						"sip:EmergencyMeasureResult": {
 							"$ref": "#/definitions/sip:EmergencyMeasureResult"
@@ -2306,6 +5505,9 @@
 				"items": {
 					"type": "object",
 					"properties": {
+						"sip:BridgeAttribute": {
+							"$ref": "#/definitions/sip:BridgeAttribute"
+						},
 						"sip:StructuralInformation": {
 							"$ref": "#/definitions/sip:StructuralInformation"
 						},
@@ -2330,41 +5532,59 @@
 						"sip:BridgeType": {
 							"$ref": "#/definitions/sip:BridgeType"
 						},
-						"sip:CodeAttribute": {
-							"$ref": "#/definitions/sip:CodeAttribute"
-						},
-						"sip:StringAttribute": {
-							"$ref": "#/definitions/sip:StringAttribute"
-						},
-						"sip:DateAttribute": {
-							"$ref": "#/definitions/sip:DateAttribute"
-						},
-						"sip:IntegerAttribute": {
-							"$ref": "#/definitions/sip:IntegerAttribute"
-						},
-						"sip:BooleanAttribute": {
-							"$ref": "#/definitions/sip:BooleanAttribute"
-						},
-						"sip:DoubleAttribute": {
-							"$ref": "#/definitions/sip:DoubleAttribute"
-						},
 						"sip:BridgePhoto": {
 							"$ref": "#/definitions/sip:BridgePhoto"
 						},
 						"sip:BridgeDrawing": {
 							"$ref": "#/definitions/sip:BridgeDrawing"
 						},
+						"sip:BridgeMaintenanceProcess": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
+						},
+						"sip:BridgeCheckLog": {
+							"$ref": "#/definitions/sip:BridgeCheckLog"
+						},
+						"sip:BridgeMaintenancePlan": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+						},
+						"sip:RepairPlan": {
+							"$ref": "#/definitions/sip:RepairPlan"
+						},
+						"sip:RepairDesign": {
+							"$ref": "#/definitions/sip:RepairDesign"
+						},
+						"sip:BridgeMaintenanceMeasures": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+						},
+						"sip:RepairReinforcement": {
+							"$ref": "#/definitions/sip:RepairReinforcement"
+						},
+						"sip:BridgeMaintenanceResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+						},
 						"sip:InspectionResult": {
 							"$ref": "#/definitions/sip:InspectionResult"
-						},
-						"sip:OtherStatusInfo": {
-							"$ref": "#/definitions/sip:OtherStatusInfo"
 						},
 						"sip:MemberConditionStatus": {
 							"$ref": "#/definitions/sip:MemberConditionStatus"
 						},
-						"sip:MitigationResult": {
-							"$ref": "#/definitions/sip:MitigationResult"
+						"sip:BridgeConditionStatus": {
+							"$ref": "#/definitions/sip:BridgeConditionStatus"
+						},
+						"sip:OtherStatusInfo": {
+							"$ref": "#/definitions/sip:OtherStatusInfo"
+						},
+						"sip:BridgeMaintenancePlanResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+						},
+						"sip:RepairPlanResult": {
+							"$ref": "#/definitions/sip:RepairPlanResult"
+						},
+						"sip:RepairDesignResult": {
+							"$ref": "#/definitions/sip:RepairDesignResult"
+						},
+						"sip:BridgeMaintenanceMeasuresResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
 						},
 						"sip:EmergencyMeasureResult": {
 							"$ref": "#/definitions/sip:EmergencyMeasureResult"
@@ -2376,17 +5596,17 @@
 				}
 			},
 			"+sip:shape": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:Shape"
-					}
-				},
+				"type": "array",
+				"items": {
+					"$ref": "#/definitions/sip:Shape"
+				}
+			},
 			"+sip:damage": {
-					"type": "array",
-					"description": "the IDs of the Damage",
-					"items": {
-						"type": "string"
-					}
+				"type": "array",
+				"description": "the IDs of the Damage",
+				"items": {
+					"type": "string"
+				}
 			}
 		},
 		"BridgeInstallation": {
@@ -2404,6 +5624,9 @@
 				"items": {
 					"type": "object",
 					"properties": {
+						"sip:BridgeAttribute": {
+							"$ref": "#/definitions/sip:BridgeAttribute"
+						},
 						"sip:StructuralInformation": {
 							"$ref": "#/definitions/sip:StructuralInformation"
 						},
@@ -2425,38 +5648,59 @@
 						"sip:UpDownType": {
 							"$ref": "#/definitions/sip:UpDownType"
 						},
-						"sip:CodeAttribute": {
-							"$ref": "#/definitions/sip:CodeAttribute"
-						},
-						"sip:StringAttribute": {
-							"$ref": "#/definitions/sip:StringAttribute"
-						},
-						"sip:DateAttribute": {
-							"$ref": "#/definitions/sip:DateAttribute"
-						},
-						"sip:IntegerAttribute": {
-							"$ref": "#/definitions/sip:IntegerAttribute"
-						},
-						"sip:BooleanAttribute": {
-							"$ref": "#/definitions/sip:BooleanAttribute"
-						},
-						"sip:DoubleAttribute": {
-							"$ref": "#/definitions/sip:DoubleAttribute"
-						},
-						"sip:InspectionResult": {
-							"$ref": "#/definitions/sip:InspectionResult"
-						},
 						"sip:BridgePhoto": {
-								"$ref": "#/definitions/sip:BridgePhoto"
+							"$ref": "#/definitions/sip:BridgePhoto"
 						},
 						"sip:BridgeDrawing": {
 							"$ref": "#/definitions/sip:BridgeDrawing"
 						},
+						"sip:BridgeMaintenanceProcess": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
+						},
+						"sip:BridgeCheckLog": {
+							"$ref": "#/definitions/sip:BridgeCheckLog"
+						},
+						"sip:BridgeMaintenancePlan": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+						},
+						"sip:RepairPlan": {
+							"$ref": "#/definitions/sip:RepairPlan"
+						},
+						"sip:RepairDesign": {
+							"$ref": "#/definitions/sip:RepairDesign"
+						},
+						"sip:BridgeMaintenanceMeasures": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+						},
+						"sip:RepairReinforcement": {
+							"$ref": "#/definitions/sip:RepairReinforcement"
+						},
+						"sip:BridgeMaintenanceResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+						},
+						"sip:InspectionResult": {
+							"$ref": "#/definitions/sip:InspectionResult"
+						},
 						"sip:MemberConditionStatus": {
 							"$ref": "#/definitions/sip:MemberConditionStatus"
 						},
-						"sip:MitigationResult": {
-							"$ref": "#/definitions/sip:MitigationResult"
+						"sip:BridgeConditionStatus": {
+							"$ref": "#/definitions/sip:BridgeConditionStatus"
+						},
+						"sip:OtherStatusInfo": {
+							"$ref": "#/definitions/sip:OtherStatusInfo"
+						},
+						"sip:BridgeMaintenancePlanResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+						},
+						"sip:RepairPlanResult": {
+							"$ref": "#/definitions/sip:RepairPlanResult"
+						},
+						"sip:RepairDesignResult": {
+							"$ref": "#/definitions/sip:RepairDesignResult"
+						},
+						"sip:BridgeMaintenanceMeasuresResult": {
+							"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
 						},
 						"sip:EmergencyMeasureResult": {
 							"$ref": "#/definitions/sip:EmergencyMeasureResult"
@@ -2468,17 +5712,17 @@
 				}
 			},
 			"+sip:shape": {
-					"type": "array",
-					"items": {
-						"$ref": "#/definitions/sip:Shape"
-					}
-				},
+				"type": "array",
+				"items": {
+					"$ref": "#/definitions/sip:Shape"
+				}
+			},
 			"+sip:damage": {
-					"type": "array",
-					"description": "the IDs of the Damage",
-					"items": {
-						"type": "string"
-					}
+				"type": "array",
+				"description": "the IDs of the Damage",
+				"items": {
+					"type": "string"
+				}
 			}
 		}
 	},
@@ -2567,63 +5811,15 @@
 				}
 			]
 		},
-		"+BridgeCheckLog": {
-			"allOf": [
-				{
-					"$ref": "cityobjects.schema.json#/_AbstractCityObject"
-				},
-				{
-					"properties": {
-						"type": {
-							"enum": [
-								"+BridgeCheckLog"
-							]
-						},
-						"attributes": {
-							"type": "object",
-							"properties": {
-								"sip:temporalAttribute": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/sip:TimeType"
-									}
-								},
-								"sip:bridgeName": {
-									"$ref": "#/definitions/stringOrNil"
-								},
-								"sip:inspector": {
-									"$ref": "#/definitions/stringOrNil"
-								},
-								"sip:bridgeEvaluator": {
-									"$ref": "#/definitions/stringOrNil"
-								},
-								"sip:surveyMethod": {
-									"$ref": "#/definitions/stringOrNil"
-								},
-								"sip:inspectionMethod": {
-									"$ref": "#/definitions/stringOrNil"
-								},
-								"sip:referenceGuideline": {
-									"$ref": "#/definitions/sip:Resource"
-								}
-							},
-								"required": [
-								"sip:bridgeName"
-								]
-						}
-					}
-				}
-			]
-		},
 		"+Dataset": {
 			"allOf": [
 				{
 					"$ref": "cityobjects.schema.json#/CityObjectGroup"
 				},
 				{
-					"properties":{
-						"type":{
-							"enum":[
+					"properties": {
+						"type": {
+							"enum": [
 								"+Dataset"
 							]
 						},
@@ -2636,48 +5832,197 @@
 							}
 						}
 					}
-
 				}
 			]
 		},
-		"+RepairReinforcement": {
+		"+ApplicationDataset": {
 			"allOf": [
 				{
-					"$ref": "cityobjects.schema.json#/_AbstractCityObject"
+					"$ref": "cityobjects.schema.json#/CityObjectGroup"
 				},
 				{
 					"properties": {
 						"type": {
 							"enum": [
-								"+RepairReinforcement"
+								"+ApplicationDataset"
 							]
 						},
 						"attributes": {
 							"type": "object",
 							"properties": {
-								"sip:temporalAttribute": {
-									"type": "array",
-									"items": {
-										"$ref": "#/definitions/sip:TimeType"
+								"sip:description": {
+									"type": "string"
+								},
+								"sip:ioType": {
+									"$ref": "#/definitions/codeType"
+								}
+							}
+						},
+						"member": {
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"sip:BridgeAttribute": {
+										"$ref": "#/definitions/sip:BridgeAttribute"
+									},
+									"sip:BridgeIdInfo": {
+										"$ref": "#/definitions/sip:BridgeIdInfo"
+									},
+									"sip:EmergencyTransportationRoute": {
+										"$ref": "#/definitions/sip:EmergencyTransportationRoute"
+									},
+									"sip:ImportanceCategory": {
+										"$ref": "#/definitions/sip:ImportanceCategory"
+									},
+									"sip:BridgeLocation": {
+										"$ref": "#/definitions/sip:BridgeLocation"
+									},
+									"sip:StartDateOfUse": {
+										"$ref": "#/definitions/sip:StartDateOfUse"
+									},
+									"sip:YearOfConstruction": {
+										"$ref": "#/definitions/sip:YearOfConstruction"
+									},
+									"sip:BridgeAge": {
+										"$ref": "#/definitions/sip:BridgeAge"
+									},
+									"sip:ApplicableGuidelines": {
+										"$ref": "#/definitions/sip:ApplicableGuidelines"
+									},
+									"sip:BridgeLength": {
+										"$ref": "#/definitions/sip:BridgeLength"
+									},
+									"sip:Area": {
+										"$ref": "#/definitions/sip:Area"
+									},
+									"sip:Route": {
+										"$ref": "#/definitions/sip:Route"
+									},
+									"sip:Administrator": {
+										"$ref": "#/definitions/sip:Administrator"
+									},
+									"sip:TrafficVolume": {
+										"$ref": "#/definitions/sip:TrafficVolume"
+									},
+									"sip:LoadLimit": {
+										"$ref": "#/definitions/sip:LoadLimit"
+									},
+									"sip:GeologicalConditions": {
+										"$ref": "#/definitions/sip:GeologicalConditions"
+									},
+									"sip:SaltDamageClassification": {
+										"$ref": "#/definitions/sip:SaltDamageClassification"
+									},
+									"sip:AdditionalNotes": {
+										"$ref": "#/definitions/sip:AdditionalNotes"
+									},
+									"sip:AsBuiltDrawings": {
+										"$ref": "#/definitions/sip:AsBuiltDrawings"
+									},
+									"sip:SpanCount": {
+										"$ref": "#/definitions/sip:SpanCount"
+									},
+									"sip:BridgeSpecifications": {
+										"$ref": "#/definitions/sip:BridgeSpecifications"
+									},
+									"sip:BridgeType": {
+										"$ref": "#/definitions/sip:BridgeType"
+									},
+									"sip:RoadStructure": {
+										"$ref": "#/definitions/sip:RoadStructure"
+									},
+									"sip:StructuralInformation": {
+										"$ref": "#/definitions/sip:StructuralInformation"
+									},
+									"sip:PresenceOfWaterproofingLayer": {
+										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
+									},
+									"sip:ReinforcementInformation": {
+										"$ref": "#/definitions/sip:ReinforcementInformation"
+									},
+									"sip:CrossingConditions": {
+										"$ref": "#/definitions/sip:CrossingConditions"
+									},
+									"sip:Painting": {
+										"$ref": "#/definitions/sip:Painting"
+									},
+									"sip:BridgePhoto": {
+										"$ref": "#/definitions/sip:BridgePhoto"
+									},
+									"sip:BridgeDrawing": {
+										"$ref": "#/definitions/sip:BridgeDrawing"
+									},
+									"sip:SpanGeneralDiagrams": {
+										"$ref": "#/definitions/sip:SpanGeneralDiagrams"
+									},
+									"sip:AssemblyDrawings": {
+										"$ref": "#/definitions/sip:AssemblyDrawings"
+									},
+									"sip:RoadSurfaceType": {
+										"$ref": "#/definitions/sip:RoadSurfaceType"
+									},
+									"sip:LongitudinalSlope": {
+										"$ref": "#/definitions/sip:LongitudinalSlope"
+									},
+									"sip:BridgeMaintenanceProcess": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
+									},
+									"sip:BridgeCheckLog": {
+										"$ref": "#/definitions/sip:BridgeCheckLog"
+									},
+									"sip:BridgeMaintenancePlan": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+									},
+									"sip:RepairPlan": {
+										"$ref": "#/definitions/sip:RepairPlan"
+									},
+									"sip:RepairDesign": {
+										"$ref": "#/definitions/sip:RepairDesign"
+									},
+									"sip:BridgeMaintenanceMeasures": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+									},
+									"sip:RepairReinforcement": {
+										"$ref": "#/definitions/sip:RepairReinforcement"
+									},
+									"sip:BridgeMaintenanceResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+									},
+									"sip:InspectionResult": {
+										"$ref": "#/definitions/sip:InspectionResult"
+									},
+									"sip:MemberConditionStatus": {
+										"$ref": "#/definitions/sip:MemberConditionStatus"
+									},
+									"sip:BridgeConditionStatus": {
+										"$ref": "#/definitions/sip:BridgeConditionStatus"
+									},
+									"sip:OtherStatusInfo": {
+										"$ref": "#/definitions/sip:OtherStatusInfo"
+									},
+									"sip:BridgeMaintenancePlanResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+									},
+									"sip:RepairPlanResult": {
+										"$ref": "#/definitions/sip:RepairPlanResult"
+									},
+									"sip:RepairDesignResult": {
+										"$ref": "#/definitions/sip:RepairDesignResult"
+									},
+									"sip:BridgeMaintenanceMeasuresResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
+									},
+									"sip:EmergencyMeasureResult": {
+										"$ref": "#/definitions/sip:EmergencyMeasureResult"
+									},
+									"sip:RepairReinforcementResult": {
+										"$ref": "#/definitions/sip:RepairReinforcementResult"
 									}
-								},
-								"sip:substance": {
-									"$ref": "#/definitions/codeType"
-								},
-								"sip:measureCategory": {
-									"$ref": "#/definitions/codeType"
-								},
-								"sip:details": {
-									"$ref": "#/definitions/stringOrNil"
 								}
 							}
 						}
-					},
-					"required": [
-						"sip:substance",
-						"sip:measureCategory",
-						"sip:details"
-					]
+					}
 				}
 			]
 		},
@@ -2698,64 +6043,172 @@
 							"properties": {
 								"sip:description": {
 									"type": "string"
+								},
+								"sip:ioType": {
+									"$ref": "#/definitions/codeType"
 								}
 							}
 						},
-						"sip:members": {
+						"sip:member": {
 							"type": "array",
 							"items": {
 								"type": "object",
 								"properties": {
+									"sip:BridgeAttribute": {
+										"$ref": "#/definitions/sip:BridgeAttribute"
+									},
 									"sip:BridgeIdInfo": {
 										"$ref": "#/definitions/sip:BridgeIdInfo"
 									},
-									"sip:BridgeLength": {
-										"$ref": "#/definitions/sip:BridgeLength"
-									},
-									"sip:ClearSpan": {
-										"$ref": "#/definitions/sip:ClearSpan"
-									},
-									"sip:SupportLength": {
-										"$ref": "#/definitions/sip:SupportLength"
-									},
-									"sip:RoadStructure": {
-										"$ref": "#/definitions/sip:RoadStructure"
-									},
-									"sip:BridgeType": {
-										"$ref": "#/definitions/sip:BridgeType"
-									},
-									"sip:GeologicalConditions": {
-										"$ref": "#/definitions/sip:GeologicalConditions"
-									},
-									"sip:Route": {
-										"$ref": "#/definitions/sip:Route"
-									},
-									"sip:Shape": {
-										"$ref": "#/definitions/sip:Shape"
-									},
-									"sip:ApplicableGuidelines": {
-										"$ref": "#/definitions/sip:ApplicableGuidelines"
-									},
-									"sip:AsBuiltDrawings": {
-										"$ref": "#/definitions/sip:AsBuiltDrawings"
-									},
-									"sip:ReinforcementInformation": {
-										"$ref": "#/definitions/sip:ReinforcementInformation"
-									},
-									"sip:Composition": {
-										"$ref": "#/definitions/sip:Composition"
-									},
-									"sip:StructuralInformation": {
-										"$ref": "#/definitions/sip:StructuralInformation"
+									"sip:EmergencyTransportationRoute": {
+										"$ref": "#/definitions/sip:EmergencyTransportationRoute"
 									},
 									"sip:ImportanceCategory": {
 										"$ref": "#/definitions/sip:ImportanceCategory"
 									},
+									"sip:BridgeLocation": {
+										"$ref": "#/definitions/sip:BridgeLocation"
+									},
 									"sip:StartDateOfUse": {
 										"$ref": "#/definitions/sip:StartDateOfUse"
 									},
-									"sip:Load": {
-										"$ref": "#/definitions/sip:Load"
+									"sip:YearOfConstruction": {
+										"$ref": "#/definitions/sip:YearOfConstruction"
+									},
+									"sip:BridgeAge": {
+										"$ref": "#/definitions/sip:BridgeAge"
+									},
+									"sip:ApplicableGuidelines": {
+										"$ref": "#/definitions/sip:ApplicableGuidelines"
+									},
+									"sip:BridgeLength": {
+										"$ref": "#/definitions/sip:BridgeLength"
+									},
+									"sip:Area": {
+										"$ref": "#/definitions/sip:Area"
+									},
+									"sip:Route": {
+										"$ref": "#/definitions/sip:Route"
+									},
+									"sip:Administrator": {
+										"$ref": "#/definitions/sip:Administrator"
+									},
+									"sip:TrafficVolume": {
+										"$ref": "#/definitions/sip:TrafficVolume"
+									},
+									"sip:LoadLimit": {
+										"$ref": "#/definitions/sip:LoadLimit"
+									},
+									"sip:GeologicalConditions": {
+										"$ref": "#/definitions/sip:GeologicalConditions"
+									},
+									"sip:SaltDamageClassification": {
+										"$ref": "#/definitions/sip:SaltDamageClassification"
+									},
+									"sip:AdditionalNotes": {
+										"$ref": "#/definitions/sip:AdditionalNotes"
+									},
+									"sip:AsBuiltDrawings": {
+										"$ref": "#/definitions/sip:AsBuiltDrawings"
+									},
+									"sip:SpanCount": {
+										"$ref": "#/definitions/sip:SpanCount"
+									},
+									"sip:BridgeSpecifications": {
+										"$ref": "#/definitions/sip:BridgeSpecifications"
+									},
+									"sip:BridgeType": {
+										"$ref": "#/definitions/sip:BridgeType"
+									},
+									"sip:RoadStructure": {
+										"$ref": "#/definitions/sip:RoadStructure"
+									},
+									"sip:StructuralInformation": {
+										"$ref": "#/definitions/sip:StructuralInformation"
+									},
+									"sip:PresenceOfWaterproofingLayer": {
+										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
+									},
+									"sip:ReinforcementInformation": {
+										"$ref": "#/definitions/sip:ReinforcementInformation"
+									},
+									"sip:CrossingConditions": {
+										"$ref": "#/definitions/sip:CrossingConditions"
+									},
+									"sip:Painting": {
+										"$ref": "#/definitions/sip:Painting"
+									},
+									"sip:BridgePhoto": {
+										"$ref": "#/definitions/sip:BridgePhoto"
+									},
+									"sip:BridgeDrawing": {
+										"$ref": "#/definitions/sip:BridgeDrawing"
+									},
+									"sip:SpanGeneralDiagrams": {
+										"$ref": "#/definitions/sip:SpanGeneralDiagrams"
+									},
+									"sip:AssemblyDrawings": {
+										"$ref": "#/definitions/sip:AssemblyDrawings"
+									},
+									"sip:RoadSurfaceType": {
+										"$ref": "#/definitions/sip:RoadSurfaceType"
+									},
+									"sip:LongitudinalSlope": {
+										"$ref": "#/definitions/sip:LongitudinalSlope"
+									},
+									"sip:BridgeMaintenanceProcess": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
+									},
+									"sip:BridgeCheckLog": {
+										"$ref": "#/definitions/sip:BridgeCheckLog"
+									},
+									"sip:BridgeMaintenancePlan": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+									},
+									"sip:RepairPlan": {
+										"$ref": "#/definitions/sip:RepairPlan"
+									},
+									"sip:RepairDesign": {
+										"$ref": "#/definitions/sip:RepairDesign"
+									},
+									"sip:BridgeMaintenanceMeasures": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+									},
+									"sip:RepairReinforcement": {
+										"$ref": "#/definitions/sip:RepairReinforcement"
+									},
+									"sip:BridgeMaintenanceResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+									},
+									"sip:InspectionResult": {
+										"$ref": "#/definitions/sip:InspectionResult"
+									},
+									"sip:MemberConditionStatus": {
+										"$ref": "#/definitions/sip:MemberConditionStatus"
+									},
+									"sip:BridgeConditionStatus": {
+										"$ref": "#/definitions/sip:BridgeConditionStatus"
+									},
+									"sip:OtherStatusInfo": {
+										"$ref": "#/definitions/sip:OtherStatusInfo"
+									},
+									"sip:BridgeMaintenancePlanResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+									},
+									"sip:RepairPlanResult": {
+										"$ref": "#/definitions/sip:RepairPlanResult"
+									},
+									"sip:RepairDesignResult": {
+										"$ref": "#/definitions/sip:RepairDesignResult"
+									},
+									"sip:BridgeMaintenanceMeasuresResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
+									},
+									"sip:EmergencyMeasureResult": {
+										"$ref": "#/definitions/sip:EmergencyMeasureResult"
+									},
+									"sip:RepairReinforcementResult": {
+										"$ref": "#/definitions/sip:RepairReinforcementResult"
 									}
 								}
 							}
@@ -2791,58 +6244,166 @@
 								}
 							}
 						},
-						"sip:members": {
+						"sip:member": {
 							"type": "array",
 							"items": {
 								"type": "object",
 								"properties": {
+									"sip:BridgeAttribute": {
+										"$ref": "#/definitions/sip:BridgeAttribute"
+									},
 									"sip:BridgeIdInfo": {
 										"$ref": "#/definitions/sip:BridgeIdInfo"
 									},
-									"sip:BridgeLength": {
-										"$ref": "#/definitions/sip:BridgeLength"
+									"sip:EmergencyTransportationRoute": {
+										"$ref": "#/definitions/sip:EmergencyTransportationRoute"
 									},
-									"sip:RoadStructure": {
-										"$ref": "#/definitions/sip:RoadStructure"
+									"sip:ImportanceCategory": {
+										"$ref": "#/definitions/sip:ImportanceCategory"
 									},
-									"sip:BridgeType": {
-										"$ref": "#/definitions/sip:BridgeType"
+									"sip:BridgeLocation": {
+										"$ref": "#/definitions/sip:BridgeLocation"
 									},
 									"sip:StartDateOfUse": {
 										"$ref": "#/definitions/sip:StartDateOfUse"
 									},
+									"sip:YearOfConstruction": {
+										"$ref": "#/definitions/sip:YearOfConstruction"
+									},
+									"sip:BridgeAge": {
+										"$ref": "#/definitions/sip:BridgeAge"
+									},
 									"sip:ApplicableGuidelines": {
 										"$ref": "#/definitions/sip:ApplicableGuidelines"
 									},
-									"sip:Load": {
-										"$ref": "#/definitions/sip:Load"
+									"sip:BridgeLength": {
+										"$ref": "#/definitions/sip:BridgeLength"
 									},
-									"sip:PresenceOfWaterproofingLayer": {
-										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
+									"sip:Area": {
+										"$ref": "#/definitions/sip:Area"
 									},
-									"sip:SaltDamageClassification": {
-										"$ref": "#/definitions/sip:SaltDamageClassification"
+									"sip:Route": {
+										"$ref": "#/definitions/sip:Route"
 									},
-									"sip:CrossingConditions": {
-										"$ref": "#/definitions/sip:CrossingConditions"
+									"sip:Administrator": {
+										"$ref": "#/definitions/sip:Administrator"
 									},
 									"sip:TrafficVolume": {
 										"$ref": "#/definitions/sip:TrafficVolume"
 									},
-									"sip:BridgeCheckLog": {
-										"$ref": "#/definitions/sip:BridgeCheckLog"
+									"sip:LoadLimit": {
+										"$ref": "#/definitions/sip:LoadLimit"
 									},
-									"sip:Composition": {
-										"$ref": "#/definitions/sip:Composition"
+									"sip:GeologicalConditions": {
+										"$ref": "#/definitions/sip:GeologicalConditions"
 									},
-									"sip:RepairReinforcementResult": {
-										"$ref": "#/definitions/sip:RepairReinforcementResult"
+									"sip:SaltDamageClassification": {
+										"$ref": "#/definitions/sip:SaltDamageClassification"
 									},
-									"sip:Shape": {
-										"$ref": "#/definitions/sip:Shape"
+									"sip:AdditionalNotes": {
+										"$ref": "#/definitions/sip:AdditionalNotes"
+									},
+									"sip:AsBuiltDrawings": {
+										"$ref": "#/definitions/sip:AsBuiltDrawings"
+									},
+									"sip:SpanCount": {
+										"$ref": "#/definitions/sip:SpanCount"
+									},
+									"sip:BridgeSpecifications": {
+										"$ref": "#/definitions/sip:BridgeSpecifications"
+									},
+									"sip:BridgeType": {
+										"$ref": "#/definitions/sip:BridgeType"
+									},
+									"sip:RoadStructure": {
+										"$ref": "#/definitions/sip:RoadStructure"
+									},
+									"sip:StructuralInformation": {
+										"$ref": "#/definitions/sip:StructuralInformation"
+									},
+									"sip:PresenceOfWaterproofingLayer": {
+										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
+									},
+									"sip:ReinforcementInformation": {
+										"$ref": "#/definitions/sip:ReinforcementInformation"
+									},
+									"sip:CrossingConditions": {
+										"$ref": "#/definitions/sip:CrossingConditions"
 									},
 									"sip:Painting": {
 										"$ref": "#/definitions/sip:Painting"
+									},
+									"sip:BridgePhoto": {
+										"$ref": "#/definitions/sip:BridgePhoto"
+									},
+									"sip:BridgeDrawing": {
+										"$ref": "#/definitions/sip:BridgeDrawing"
+									},
+									"sip:SpanGeneralDiagrams": {
+										"$ref": "#/definitions/sip:SpanGeneralDiagrams"
+									},
+									"sip:AssemblyDrawings": {
+										"$ref": "#/definitions/sip:AssemblyDrawings"
+									},
+									"sip:RoadSurfaceType": {
+										"$ref": "#/definitions/sip:RoadSurfaceType"
+									},
+									"sip:LongitudinalSlope": {
+										"$ref": "#/definitions/sip:LongitudinalSlope"
+									},
+									"sip:BridgeMaintenanceProcess": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
+									},
+									"sip:BridgeCheckLog": {
+										"$ref": "#/definitions/sip:BridgeCheckLog"
+									},
+									"sip:BridgeMaintenancePlan": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+									},
+									"sip:RepairPlan": {
+										"$ref": "#/definitions/sip:RepairPlan"
+									},
+									"sip:RepairDesign": {
+										"$ref": "#/definitions/sip:RepairDesign"
+									},
+									"sip:BridgeMaintenanceMeasures": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+									},
+									"sip:RepairReinforcement": {
+										"$ref": "#/definitions/sip:RepairReinforcement"
+									},
+									"sip:BridgeMaintenanceResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+									},
+									"sip:InspectionResult": {
+										"$ref": "#/definitions/sip:InspectionResult"
+									},
+									"sip:MemberConditionStatus": {
+										"$ref": "#/definitions/sip:MemberConditionStatus"
+									},
+									"sip:BridgeConditionStatus": {
+										"$ref": "#/definitions/sip:BridgeConditionStatus"
+									},
+									"sip:OtherStatusInfo": {
+										"$ref": "#/definitions/sip:OtherStatusInfo"
+									},
+									"sip:BridgeMaintenancePlanResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+									},
+									"sip:RepairPlanResult": {
+										"$ref": "#/definitions/sip:RepairPlanResult"
+									},
+									"sip:RepairDesignResult": {
+										"$ref": "#/definitions/sip:RepairDesignResult"
+									},
+									"sip:BridgeMaintenanceMeasuresResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
+									},
+									"sip:EmergencyMeasureResult": {
+										"$ref": "#/definitions/sip:EmergencyMeasureResult"
+									},
+									"sip:RepairReinforcementResult": {
+										"$ref": "#/definitions/sip:RepairReinforcementResult"
 									}
 								}
 							}
@@ -2878,64 +6439,166 @@
 								}
 							}
 						},
-						"sip:members": {
+						"members": {
 							"type": "array",
 							"items": {
 								"type": "object",
 								"properties": {
+									"sip:BridgeAttribute": {
+										"$ref": "#/definitions/sip:BridgeAttribute"
+									},
 									"sip:BridgeIdInfo": {
 										"$ref": "#/definitions/sip:BridgeIdInfo"
-									},
-									"sip:BridgeLength": {
-										"$ref": "#/definitions/sip:BridgeLength"
-									},
-									"sip:RoadStructure": {
-										"$ref": "#/definitions/sip:RoadStructure"
-									},
-									"sip:BridgeType": {
-										"$ref": "#/definitions/sip:BridgeType"
-									},
-									"sip:StartDateOfUse": {
-										"$ref": "#/definitions/sip:StartDateOfUse"
-									},
-									"sip:ApplicableGuidelines": {
-										"$ref": "#/definitions/sip:ApplicableGuidelines"
-									},
-									"sip:Load": {
-										"$ref": "#/definitions/sip:Load"
-									},
-									"sip:PresenceOfWaterproofingLayer": {
-										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
-									},
-									"sip:SaltDamageClassification": {
-										"$ref": "#/definitions/sip:SaltDamageClassification"
-									},
-									"sip:CrossingConditions": {
-										"$ref": "#/definitions/sip:CrossingConditions"
-									},
-									"sip:Route": {
-										"$ref": "#/definitions/sip:Route"
 									},
 									"sip:EmergencyTransportationRoute": {
 										"$ref": "#/definitions/sip:EmergencyTransportationRoute"
 									},
+									"sip:ImportanceCategory": {
+										"$ref": "#/definitions/sip:ImportanceCategory"
+									},
+									"sip:BridgeLocation": {
+										"$ref": "#/definitions/sip:BridgeLocation"
+									},
+									"sip:StartDateOfUse": {
+										"$ref": "#/definitions/sip:StartDateOfUse"
+									},
+									"sip:YearOfConstruction": {
+										"$ref": "#/definitions/sip:YearOfConstruction"
+									},
+									"sip:BridgeAge": {
+										"$ref": "#/definitions/sip:BridgeAge"
+									},
+									"sip:ApplicableGuidelines": {
+										"$ref": "#/definitions/sip:ApplicableGuidelines"
+									},
+									"sip:BridgeLength": {
+										"$ref": "#/definitions/sip:BridgeLength"
+									},
+									"sip:Area": {
+										"$ref": "#/definitions/sip:Area"
+									},
+									"sip:Route": {
+										"$ref": "#/definitions/sip:Route"
+									},
+									"sip:Administrator": {
+										"$ref": "#/definitions/sip:Administrator"
+									},
 									"sip:TrafficVolume": {
 										"$ref": "#/definitions/sip:TrafficVolume"
 									},
-									"sip:Composition": {
-										"$ref": "#/definitions/sip:Composition"
+									"sip:LoadLimit": {
+										"$ref": "#/definitions/sip:LoadLimit"
+									},
+									"sip:GeologicalConditions": {
+										"$ref": "#/definitions/sip:GeologicalConditions"
+									},
+									"sip:SaltDamageClassification": {
+										"$ref": "#/definitions/sip:SaltDamageClassification"
+									},
+									"sip:AdditionalNotes": {
+										"$ref": "#/definitions/sip:AdditionalNotes"
+									},
+									"sip:AsBuiltDrawings": {
+										"$ref": "#/definitions/sip:AsBuiltDrawings"
+									},
+									"sip:SpanCount": {
+										"$ref": "#/definitions/sip:SpanCount"
+									},
+									"sip:BridgeSpecifications": {
+										"$ref": "#/definitions/sip:BridgeSpecifications"
+									},
+									"sip:BridgeType": {
+										"$ref": "#/definitions/sip:BridgeType"
+									},
+									"sip:RoadStructure": {
+										"$ref": "#/definitions/sip:RoadStructure"
+									},
+									"sip:StructuralInformation": {
+										"$ref": "#/definitions/sip:StructuralInformation"
+									},
+									"sip:PresenceOfWaterproofingLayer": {
+										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
+									},
+									"sip:ReinforcementInformation": {
+										"$ref": "#/definitions/sip:ReinforcementInformation"
+									},
+									"sip:CrossingConditions": {
+										"$ref": "#/definitions/sip:CrossingConditions"
+									},
+									"sip:Painting": {
+										"$ref": "#/definitions/sip:Painting"
+									},
+									"sip:BridgePhoto": {
+										"$ref": "#/definitions/sip:BridgePhoto"
+									},
+									"sip:BridgeDrawing": {
+										"$ref": "#/definitions/sip:BridgeDrawing"
+									},
+									"sip:SpanGeneralDiagrams": {
+										"$ref": "#/definitions/sip:SpanGeneralDiagrams"
+									},
+									"sip:AssemblyDrawings": {
+										"$ref": "#/definitions/sip:AssemblyDrawings"
+									},
+									"sip:RoadSurfaceType": {
+										"$ref": "#/definitions/sip:RoadSurfaceType"
+									},
+									"sip:LongitudinalSlope": {
+										"$ref": "#/definitions/sip:LongitudinalSlope"
+									},
+									"sip:BridgeMaintenanceProcess": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
 									},
 									"sip:BridgeCheckLog": {
 										"$ref": "#/definitions/sip:BridgeCheckLog"
 									},
+									"sip:BridgeMaintenancePlan": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+									},
+									"sip:RepairPlan": {
+										"$ref": "#/definitions/sip:RepairPlan"
+									},
+									"sip:RepairDesign": {
+										"$ref": "#/definitions/sip:RepairDesign"
+									},
+									"sip:BridgeMaintenanceMeasures": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+									},
+									"sip:RepairReinforcement": {
+										"$ref": "#/definitions/sip:RepairReinforcement"
+									},
+									"sip:BridgeMaintenanceResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+									},
+									"sip:InspectionResult": {
+										"$ref": "#/definitions/sip:InspectionResult"
+									},
+									"sip:MemberConditionStatus": {
+										"$ref": "#/definitions/sip:MemberConditionStatus"
+									},
+									"sip:BridgeConditionStatus": {
+										"$ref": "#/definitions/sip:BridgeConditionStatus"
+									},
+									"sip:OtherStatusInfo": {
+										"$ref": "#/definitions/sip:OtherStatusInfo"
+									},
+									"sip:BridgeMaintenancePlanResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+									},
+									"sip:RepairPlanResult": {
+										"$ref": "#/definitions/sip:RepairPlanResult"
+									},
+									"sip:RepairDesignResult": {
+										"$ref": "#/definitions/sip:RepairDesignResult"
+									},
+									"sip:BridgeMaintenanceMeasuresResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
+									},
+									"sip:EmergencyMeasureResult": {
+										"$ref": "#/definitions/sip:EmergencyMeasureResult"
+									},
 									"sip:RepairReinforcementResult": {
 										"$ref": "#/definitions/sip:RepairReinforcementResult"
-									},
-									"sip:Shape": {
-										"$ref": "#/definitions/sip:Shape"
-									},
-									"sip:Painting": {
-										"$ref": "#/definitions/sip:Painting"
 									}
 								}
 							}
@@ -2971,43 +6634,16 @@
 								}
 							}
 						},
-						"sip:members": {
+						"members": {
 							"type": "array",
 							"items": {
 								"type": "object",
 								"properties": {
+									"sip:BridgeAttribute": {
+										"$ref": "#/definitions/sip:BridgeAttribute"
+									},
 									"sip:BridgeIdInfo": {
 										"$ref": "#/definitions/sip:BridgeIdInfo"
-									},
-									"sip:BridgeLength": {
-										"$ref": "#/definitions/sip:BridgeLength"
-									},
-									"sip:RoadStructure": {
-										"$ref": "#/definitions/sip:RoadStructure"
-									},
-									"sip:BridgeType": {
-										"$ref": "#/definitions/sip:BridgeType"
-									},
-									"sip:StartDateOfUse": {
-										"$ref": "#/definitions/sip:StartDateOfUse"
-									},
-									"sip:ApplicableGuidelines": {
-										"$ref": "#/definitions/sip:ApplicableGuidelines"
-									},
-									"sip:Load": {
-										"$ref": "#/definitions/sip:Load"
-									},
-									"sip:PresenceOfWaterproofingLayer": {
-										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
-									},
-									"sip:SaltDamageClassification": {
-										"$ref": "#/definitions/sip:SaltDamageClassification"
-									},
-									"sip:CrossingConditions": {
-										"$ref": "#/definitions/sip:CrossingConditions"
-									},
-									"sip:Route": {
-										"$ref": "#/definitions/sip:Route"
 									},
 									"sip:EmergencyTransportationRoute": {
 										"$ref": "#/definitions/sip:EmergencyTransportationRoute"
@@ -3015,23 +6651,149 @@
 									"sip:ImportanceCategory": {
 										"$ref": "#/definitions/sip:ImportanceCategory"
 									},
+									"sip:BridgeLocation": {
+										"$ref": "#/definitions/sip:BridgeLocation"
+									},
+									"sip:StartDateOfUse": {
+										"$ref": "#/definitions/sip:StartDateOfUse"
+									},
+									"sip:YearOfConstruction": {
+										"$ref": "#/definitions/sip:YearOfConstruction"
+									},
+									"sip:BridgeAge": {
+										"$ref": "#/definitions/sip:BridgeAge"
+									},
+									"sip:ApplicableGuidelines": {
+										"$ref": "#/definitions/sip:ApplicableGuidelines"
+									},
+									"sip:BridgeLength": {
+										"$ref": "#/definitions/sip:BridgeLength"
+									},
+									"sip:Area": {
+										"$ref": "#/definitions/sip:Area"
+									},
+									"sip:Route": {
+										"$ref": "#/definitions/sip:Route"
+									},
+									"sip:Administrator": {
+										"$ref": "#/definitions/sip:Administrator"
+									},
 									"sip:TrafficVolume": {
 										"$ref": "#/definitions/sip:TrafficVolume"
+									},
+									"sip:LoadLimit": {
+										"$ref": "#/definitions/sip:LoadLimit"
 									},
 									"sip:GeologicalConditions": {
 										"$ref": "#/definitions/sip:GeologicalConditions"
 									},
-									"sip:BridgeCheckLog": {
-										"$ref": "#/definitions/sip:BridgeCheckLog"
+									"sip:SaltDamageClassification": {
+										"$ref": "#/definitions/sip:SaltDamageClassification"
 									},
-									"sip:RepairReinforcementResult": {
-										"$ref": "#/definitions/sip:RepairReinforcementResult"
+									"sip:AdditionalNotes": {
+										"$ref": "#/definitions/sip:AdditionalNotes"
 									},
-									"sip:Shape": {
-										"$ref": "#/definitions/sip:Shape"
+									"sip:AsBuiltDrawings": {
+										"$ref": "#/definitions/sip:AsBuiltDrawings"
+									},
+									"sip:SpanCount": {
+										"$ref": "#/definitions/sip:SpanCount"
+									},
+									"sip:BridgeSpecifications": {
+										"$ref": "#/definitions/sip:BridgeSpecifications"
+									},
+									"sip:BridgeType": {
+										"$ref": "#/definitions/sip:BridgeType"
+									},
+									"sip:RoadStructure": {
+										"$ref": "#/definitions/sip:RoadStructure"
+									},
+									"sip:StructuralInformation": {
+										"$ref": "#/definitions/sip:StructuralInformation"
+									},
+									"sip:PresenceOfWaterproofingLayer": {
+										"$ref": "#/definitions/sip:PresenceOfWaterproofingLayer"
+									},
+									"sip:ReinforcementInformation": {
+										"$ref": "#/definitions/sip:ReinforcementInformation"
+									},
+									"sip:CrossingConditions": {
+										"$ref": "#/definitions/sip:CrossingConditions"
 									},
 									"sip:Painting": {
 										"$ref": "#/definitions/sip:Painting"
+									},
+									"sip:BridgePhoto": {
+										"$ref": "#/definitions/sip:BridgePhoto"
+									},
+									"sip:BridgeDrawing": {
+										"$ref": "#/definitions/sip:BridgeDrawing"
+									},
+									"sip:SpanGeneralDiagrams": {
+										"$ref": "#/definitions/sip:SpanGeneralDiagrams"
+									},
+									"sip:AssemblyDrawings": {
+										"$ref": "#/definitions/sip:AssemblyDrawings"
+									},
+									"sip:RoadSurfaceType": {
+										"$ref": "#/definitions/sip:RoadSurfaceType"
+									},
+									"sip:LongitudinalSlope": {
+										"$ref": "#/definitions/sip:LongitudinalSlope"
+									},
+									"sip:BridgeMaintenanceProcess": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceProcess"
+									},
+									"sip:BridgeCheckLog": {
+										"$ref": "#/definitions/sip:BridgeCheckLog"
+									},
+									"sip:BridgeMaintenancePlan": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlan"
+									},
+									"sip:RepairPlan": {
+										"$ref": "#/definitions/sip:RepairPlan"
+									},
+									"sip:RepairDesign": {
+										"$ref": "#/definitions/sip:RepairDesign"
+									},
+									"sip:BridgeMaintenanceMeasures": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasures"
+									},
+									"sip:RepairReinforcement": {
+										"$ref": "#/definitions/sip:RepairReinforcement"
+									},
+									"sip:BridgeMaintenanceResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceResult"
+									},
+									"sip:InspectionResult": {
+										"$ref": "#/definitions/sip:InspectionResult"
+									},
+									"sip:MemberConditionStatus": {
+										"$ref": "#/definitions/sip:MemberConditionStatus"
+									},
+									"sip:BridgeConditionStatus": {
+										"$ref": "#/definitions/sip:BridgeConditionStatus"
+									},
+									"sip:OtherStatusInfo": {
+										"$ref": "#/definitions/sip:OtherStatusInfo"
+									},
+									"sip:BridgeMaintenancePlanResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenancePlanResult"
+									},
+									"sip:RepairPlanResult": {
+										"$ref": "#/definitions/sip:RepairPlanResult"
+									},
+									"sip:RepairDesignResult": {
+										"$ref": "#/definitions/sip:RepairDesignResult"
+									},
+									"sip:BridgeMaintenanceMeasuresResult": {
+										"$ref": "#/definitions/sip:BridgeMaintenanceMeasuresResult"
+									},
+									"sip:EmergencyMeasureResult": {
+										"$ref": "#/definitions/sip:EmergencyMeasureResult"
+									},
+									"sip:RepairReinforcementResult": {
+										"$ref": "#/definitions/sip:RepairReinforcementResult"
 									}
 								}
 							}
@@ -3151,9 +6913,14 @@
 											"sip:Photo": {
 												"type": "array",
 												"items": {
-													"anyOf":[
-														{"$ref": "#/definitions/sip:Photo"},
-														{"type":"string","description":"id of photo"}
+													"anyOf": [
+														{
+															"$ref": "#/definitions/sip:Photo"
+														},
+														{
+															"type": "string",
+															"description": "id of photo"
+														}
 													]
 												}
 											}
@@ -3168,9 +6935,14 @@
 											"sip:Drawing": {
 												"type": "array",
 												"items": {
-													"anyOf":[
-														{"$ref": "#/definitions/sip:Drawing"},
-														{"type":"string","description":"id of drawing"}
+													"anyOf": [
+														{
+															"$ref": "#/definitions/sip:Drawing"
+														},
+														{
+															"type": "string",
+															"description": "id of drawing"
+														}
 													]
 												}
 											}
@@ -3201,7 +6973,7 @@
 												"type": "array",
 												"items": {
 													"$ref": "#/definitions/sip:DamagePhoto"
-														}
+												}
 											}
 										}
 									},
